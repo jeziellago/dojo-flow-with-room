@@ -1,11 +1,11 @@
 package dev.dojo.jokesflow.domain.usecase
 
+import dev.dojo.jokesflow.domain.Joke
 import dev.dojo.jokesflow.domain.repository.JokeRepository
+import kotlinx.coroutines.flow.Flow
 
-class ListJokesUseCase(private val repository: JokeRepository) {
+typealias ListJokesUseCase = () -> Flow<List<Joke>>
 
-    operator fun invoke() {
-        // get all jokes
-    }
-
+fun listJokesUseCase(repository: JokeRepository): Flow<List<Joke>> {
+    return repository.getAllJokes()
 }

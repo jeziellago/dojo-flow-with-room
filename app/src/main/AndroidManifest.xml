@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
           package="dev.dojo.jokesflow">
 
+    <uses-permission android:name="android.permission.INTERNET"/>
+
     <application
             android:name=".JokesApplication"
             android:allowBackup="false"

@@ -4,7 +4,7 @@ import dev.dojo.jokesflow.domain.repository.JokeRepository
 
 class GetNewJokeUseCase(private val repository: JokeRepository) {
 
-    operator fun invoke() {
-
+    suspend operator fun invoke() {
+        repository.createJoke()
     }
 }

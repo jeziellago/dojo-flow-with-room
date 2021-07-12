@@ -4,7 +4,12 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.widget.Toast
 import androidx.core.view.isVisible
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.lifecycleScope
+import androidx.lifecycle.repeatOnLifecycle
 import dev.dojo.jokesflow.databinding.ActivityJokeBinding
+import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
 import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class JokeActivity : AppCompatActivity() {
@@ -29,12 +34,21 @@ class JokeActivity : AppCompatActivity() {
     private fun setupViews() {
         with(binding) {
             jokesRecyclerView.adapter = jokesAdapter
+            btnGetNewJoke.setOnClickListener {
+                jokeViewModel.onNewJoke()
+            }
         }
 
-        //todo: observe and render state
+        lifecycleScope.launch {
+            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
+                jokeViewModel.state.collect { state ->
+                    renderState(state)
+                }
+            }
+        }
     }
 
-    fun renderState(state: JokeUIState) {
+    private fun renderState(state: JokeUIState) {
         binding.progressBar.isVisible = state.isLoading
 
         state.jokes
